@@ -11,7 +11,6 @@ def create_short_link(request):
         if 'url' in request.data:
             url = request.data['url']
 
-            # val = URLValidator(verify_exists=True)
             try:
                 URLValidator()(url)
             except ValidationError as e:
