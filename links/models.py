@@ -17,7 +17,8 @@ class Links(models.Model):
         return f'{self.link}'
 
     def save(self, *args, **kwargs):
-        self.short_link = self.generate_link_id()
+        if not self.link_id:
+            self.link_id = self.generate_link_id()
         super().save(*args, **kwargs)
 
     @staticmethod
