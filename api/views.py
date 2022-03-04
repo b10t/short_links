@@ -1,15 +1,29 @@
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
-from rest_framework.decorators import api_view
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
+from django.http import JsonResponse
 from links.models import Links
+from rest_framework.decorators import api_view
 
 
 @api_view(['POST'])
 def create_short_link(request):
     if request.method == 'POST':
         if 'url' in request.data:
+            url = request.data['url']
+
+            # val = URLValidator(verify_exists=True)
+            try:
+                URLValidator()(url)
+            except ValidationError as e:
+                return JsonResponse(
+                    dict(
+                        error=e.message
+                    ),
+                    status=200
+                )
+
             link, _ = Links.objects.get_or_create(
-                link=request.data['url'])
+                link=url)
             return JsonResponse(
                 dict(
                     url=request.build_absolute_uri(f'/{link.link_id}/')
