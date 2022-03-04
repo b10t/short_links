@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Links
+
+
+@admin.register(Links)
+class LinksAdmin(admin.ModelAdmin):
+    pass
