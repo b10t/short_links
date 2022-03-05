@@ -1,12 +1,15 @@
 from random import choice, shuffle
 from string import ascii_letters, digits
 
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
 from django.db import models
 
 
 class Links(models.Model):
-    link = models.CharField(
+    link = models.URLField(
         max_length=300,
+        validators=[URLValidator()],
         verbose_name='Ссылка')
     link_id = models.CharField(
         max_length=300,
@@ -17,6 +20,11 @@ class Links(models.Model):
         return f'{self.link}'
 
     def save(self, *args, **kwargs):
+        try:
+            URLValidator()(self.link)
+        except ValidationError as e:
+            raise ValidationError(e)
+
         if not self.link_id:
             self.link_id = self.generate_link_id()
         super().save(*args, **kwargs)
