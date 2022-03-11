@@ -18,7 +18,7 @@ from django.urls import include, path, re_path
 from links.views import redirect
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    re_path(r'^(?P<path>.*)/$', redirect),
+    re_path(r'^l_(?P<path>.*)/$', redirect),
+    path('', admin.site.urls),
 ]
