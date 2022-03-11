@@ -22,7 +22,7 @@ def create_short_link(request):
 
             return JsonResponse(
                 dict(
-                    url=request.build_absolute_uri(f'/{link.link_id}/')
+                    url=request.build_absolute_uri(f'/l_{link.link_id}/')
                 ),
                 status=200
             )
