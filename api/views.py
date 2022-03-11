@@ -14,17 +14,16 @@ def create_short_link(request):
                 link, _ = Links.objects.get_or_create(link=url)
             except ValidationError as e:
                 return JsonResponse(
-                    dict(
-                        error=e.message
-                    ),
+                    dict(error=e.message),
                     status=200
                 )
 
             return JsonResponse(
-                dict(
-                    url=request.build_absolute_uri(f'/l_{link.link_id}/')
-                ),
+                dict(url=request.build_absolute_uri(f'/l_{link.link_id}/')),
                 status=200
             )
         else:
-            return JsonResponse(dict(error='Ошибка формата данных.'), status=200)
+            return JsonResponse(
+                dict(error='Ошибка формата данных.'),
+                status=200
+            )
